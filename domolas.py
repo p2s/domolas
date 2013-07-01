@@ -2,7 +2,7 @@
 # -*-coding:Utf-8 -*
 
 import sqlite3
-import log
+from log import log
 from components import *
 
 databasePath = "db"

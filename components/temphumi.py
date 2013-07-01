@@ -8,7 +8,7 @@ import time
 import logging
 from . import component
 
-
+binPath = "bin/" #relative path to bin folder from domolas root
 logger = logging.getLogger('')
 
 class TempHumi(component.Component):
@@ -39,7 +39,7 @@ class TempHumi(component.Component):
         Read temperature and humidity values
         stock values in property
         """
-        output = subprocess.check_output(["./Adafruit_DHT", "2302", "{}".format(self.pin)]);
+        output = subprocess.check_output(["./{}Adafruit_DHT".format(binPath), "2302", "{}".format(self.pin)]);
         logger.debug("trame readValue = {}".format(output))
 
         matches = re.search(b"Temp =\s+([0-9.]+)", output)
