@@ -5,10 +5,10 @@ import sqlite3
 from log import log
 from components import *
 
-databasePath = "db"
+databasePath = "/home/pi/dev/domolas/db/domolas.db"
 def init():
-    global conn
     global c
+    global conn
     conn = sqlite3.connect(databasePath)
     c = conn.cursor()
 
@@ -18,12 +18,12 @@ def main():
 
     logger.info('============================================================')
     logger.info('Start Domolas')
+
+    init()
+
     tempSensor = TempHumi(17)
     print ("Temperature = {}, humidity = {}".format(tempSensor.temp, tempSensor.humidity))
-    print ("Temperature = {}, humidity = {}".format(tempSensor.temp, tempSensor.humidity))
-    tempSensor1 = TempHumi(17)
-    print ("Temperature = {}, humidity = {}".format(tempSensor1.temp, tempSensor1.humidity))
-    print ("Temperature = {}, humidity = {}".format(tempSensor1.temp, tempSensor1.humidity))
+    tempSensor.save2DB(c, conn);
     logger.info('Stop Domolas')
 
 if __name__ == '__main__':

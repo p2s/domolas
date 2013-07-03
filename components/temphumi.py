@@ -8,8 +8,10 @@ import time
 import logging
 from . import component
 
+basePath = "/home/pi/dev/domolas"
 binPath = "bin/" #relative path to bin folder from domolas root
 logger = logging.getLogger('')
+dbTableName = "d_temphumi"
 
 class TempHumi(component.Component):
     """
@@ -39,7 +41,7 @@ class TempHumi(component.Component):
         Read temperature and humidity values
         stock values in property
         """
-        output = subprocess.check_output(["./{}Adafruit_DHT".format(binPath), "2302", "{}".format(self.pin)]);
+        output = subprocess.check_output(["{}/{}Adafruit_DHT".format(basePath,binPath), "2302", "{}".format(self.pin)]);
         logger.debug("trame readValue = {}".format(output))
 
         matches = re.search(b"Temp =\s+([0-9.]+)", output)
@@ -86,6 +88,11 @@ class TempHumi(component.Component):
             self.readValue()
 
         return self._humidity
+
+    def save2DB(self, c, conn):
+        sql = "INSERT INTO {} (name, temp, humidity, time) VALUES ({},{},{},{})".format(dbTableName, self.nbTempSensor, self.temp, self.humidity, time.time())
+        logger.debug("[save2DB][{}]".format(sql))
+        super().save2DB(c,conn,sql)
 
 
 
