@@ -10,9 +10,6 @@ import time
 import logging
 from . import component
 
-basePath = "/home/pi/dev/domolas/domolas"
-binPath = "bin/" #relative path to bin folder from domolas root
-logger = logging.getLogger('')
 dbTableName = "d_temphumi"
 
 class TempHumi(component.Component):
@@ -36,7 +33,7 @@ class TempHumi(component.Component):
         self._timeMeasure = time.time() - self._ageMax - 10
         self._temp = 0
         self._humidity = 0
-        logger.debug("creation temperature and humidity sensor named \"{}\" on pin {}".format(self.nom, self.pin))
+        gu.logger.debug("creation temperature and humidity sensor named \"{}\" on pin {}".format(self.nom, self.pin))
 
     def readValue(self):
         """
@@ -44,13 +41,13 @@ class TempHumi(component.Component):
         stock values in property
         """
         #global cfg
-        #print("config check : {}".format(cfg['DEFAULT']['BasePath']))
-        output = subprocess.check_output(["{}/{}Adafruit_DHT".format(basePath,binPath), "2302", "{}".format(self.pin)]);
-        logger.debug("trame readValue = {}".format(output))
+        print("config check : {}".format(gu.cfg['DEFAULT']['BasePath']))
+        output = subprocess.check_output([gu.cfg['DEFAULT']['TempSensorBinFullPath'], gu.cfg['DEFAULT']['TempSensorModel'], "{}".format(self.pin)]);
+        gu.logger.debug("trame readValue = {}".format(output))
 
         matches = re.search(b"Temp =\s+([0-9.]+)", output)
         if (not matches):
-            logger.debug("[readValue][temp not match]")
+            gu.logger.debug("[readValue][temp not match]")
             time.sleep(3)
             self.readValue()
             return
@@ -59,7 +56,7 @@ class TempHumi(component.Component):
         # search for humidity printout
         matches = re.search(b"Hum =\s+([0-9.]+)", output)
         if (not matches):
-            logger.debug("[readValue][humidite not match]")
+            gu.logger.debug("[readValue][humidite not match]")
             time.sleep(3)
             self.readValue()
             return
@@ -67,8 +64,8 @@ class TempHumi(component.Component):
 
         self._timeMeasure = time.time()
 
-        logger.debug("Temperature: %.1f C" % self._temp)
-        logger.debug("Humidity:    %.1f %%" % self._humidity)
+        gu.logger.debug("Temperature: %.1f C" % self._temp)
+        gu.logger.debug("Humidity:    %.1f %%" % self._humidity)
 
     @property
     def temp(self):
@@ -76,7 +73,7 @@ class TempHumi(component.Component):
         return the actual temperature
         if the temp property is older than ageMax, the readValue method is called
         """
-        #logger.debug("[getTemp]time({}) - _timeMeasure({}) = {} > _ageMax({})".format(time.time(), self._timeMeasure, time.time() - self._timeMeasure, self._ageMax))
+        #gu.logger.debug("[getTemp]time({}) - _timeMeasure({}) = {} > _ageMax({})".format(time.time(), self._timeMeasure, time.time() - self._timeMeasure, self._ageMax))
         if (time.time() - self._timeMeasure > self._ageMax):
             self.readValue()
 
@@ -94,8 +91,8 @@ class TempHumi(component.Component):
         return self._humidity
 
     def save2DB(self):
-        sql = "INSERT INTO {} (name, temp, humidity, time) VALUES ({},{},{},{})".format(dbTableName, self.nbTempSensor, self.temp, self.humidity, time.time())
-        logger.debug("[save2DB][{}]".format(sql))
+        sql = "INSERT INTO {} (name, temp, humidity, time) VALUES ({},{},{},{})".format(gu.cfg['DEFAULT']['DBTempHumiName'], self.nbTempSensor, self.temp, self.humidity, time.time())
+        gu.logger.debug("[save2DB][{}]".format(sql))
         super().save2DB(sql)
 
 

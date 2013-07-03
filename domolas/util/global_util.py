@@ -22,6 +22,6 @@ logger.debug("config read BasePath = {}".format(cfg['DEFAULT']['BasePath']))
 
 global c
 global conn
-conn = sqlite3.connect(cfg['DEFAULT']['DBPath'])
+conn = sqlite3.connect(cfg['DEFAULT']['DBFullPath'])
 c = conn.cursor()
 
