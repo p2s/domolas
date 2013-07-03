@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 # -*-coding:Utf-8 -*
 
+import util.global_util as gu
+
 import subprocess
 import re
 import sys
@@ -41,6 +43,8 @@ class TempHumi(component.Component):
         Read temperature and humidity values
         stock values in property
         """
+        #global cfg
+        #print("config check : {}".format(cfg['DEFAULT']['BasePath']))
         output = subprocess.check_output(["{}/{}Adafruit_DHT".format(basePath,binPath), "2302", "{}".format(self.pin)]);
         logger.debug("trame readValue = {}".format(output))
 
@@ -89,10 +93,10 @@ class TempHumi(component.Component):
 
         return self._humidity
 
-    def save2DB(self, c, conn):
+    def save2DB(self):
         sql = "INSERT INTO {} (name, temp, humidity, time) VALUES ({},{},{},{})".format(dbTableName, self.nbTempSensor, self.temp, self.humidity, time.time())
         logger.debug("[save2DB][{}]".format(sql))
-        super().save2DB(c,conn,sql)
+        super().save2DB(sql)
 
 
 
