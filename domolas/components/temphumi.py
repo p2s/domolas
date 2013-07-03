@@ -10,7 +10,7 @@ import time
 import logging
 from . import component
 
-basePath = "/home/pi/dev/domolas"
+basePath = "/home/pi/dev/domolas/domolas"
 binPath = "bin/" #relative path to bin folder from domolas root
 logger = logging.getLogger('')
 dbTableName = "d_temphumi"
