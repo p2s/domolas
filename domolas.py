@@ -2,14 +2,25 @@
 # -*-coding:Utf-8 -*
 
 import sqlite3
+import configparser
 from log import log
 from components import *
 
-databasePath = "/home/pi/dev/domolas/db/domolas.db"
+configFile = "conf/domolas.ini"
+
+cfg = None
+c = None
+conn = None
+
 def init():
+    global cfg
+    cfg = configparser.ConfigParser()
+    cfg.read(configFile)
+    logger.debug("config read BasePath = {}".format(cfg['DEFAULT']['BasePath']))
+
     global c
     global conn
-    conn = sqlite3.connect(databasePath)
+    conn = sqlite3.connect(cfg['DEFAULT']['DBPath'])
     c = conn.cursor()
 
 logger = log.customLogger('')
