@@ -9,6 +9,9 @@ def main():
     gu.logger.info('============================================================')
     gu.logger.info('Start Domolas')
 
+    teleInfo = comp.TeleInfo(15)
+    print ("TeleInfo HC = {}, HP = {}".format(teleInfo.indexHC, teleInfo.indexHP))
+
     tempSensor = comp.TempHumi(17)
     print ("Temperature = {}, humidity = {}".format(tempSensor.temp, tempSensor.humidity))
     tempSensor.save2DB();

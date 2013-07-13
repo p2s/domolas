@@ -3,4 +3,5 @@
 
 from components.temphumi import TempHumi
 from components.component import Component
+from components.teleinfo import TeleInfo
 
