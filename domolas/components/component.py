@@ -2,8 +2,6 @@
 # -*-coding:Utf-8 -*
 import util.global_util as gu
 
-d_temphumi = "CREATE TABLE IF NOT EXISTS d_temphumi (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(20), temp INTEGER, humidity INTEGER, time TIMESTAMP);"
-
 
 class Component:
     """components base"""
@@ -23,7 +21,7 @@ class Component:
         execute sql query on domolas db
         """
 
-        gu.c.execute(d_temphumi)
+        gu.c.execute(gu.cfg['DEFAULT']['DBTempHumiSchema'])
 
         gu.c.execute(sql)
         gu.conn.commit()
