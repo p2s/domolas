@@ -120,8 +120,32 @@ class TeleInfo(component.Component):
 
         return self._indexHC
 
+    @property
+    def periode(self):
+        """
+        return the actual humidity
+        if the humidity property is older than ageMax, the readValue method is called
+        """
+        if (time.time() - self._eMeasure > self._ageMax):
+            self.readValue()
+
+        return self._pTarif
+
+    @property
+    def iInst(self):
+        """
+        return the actual humidity
+        if the humidity property is older than ageMax, the readValue method is called
+        """
+        if (time.time() - self._eMeasure > self._ageMax):
+            self.readValue()
+
+        return self._iInst
+
+
     def save2DB(self):
-        sql = "INSERT INTO {} (name, temp, humidity, time) VALUES ({},{},{},{})".format(gu.cfg['DEFAULT']['DBTeleInfoName'], self.nbTeleInfoSensor, self.temp, self.humidity, time.time())
+        sql = "INSERT INTO {} (`name`, `indexHP`, `indexHC`, `periode`, `iInst`, `time`) VALUES ({},{},{},'{}',{},{})".format(gu.cfg['DEFAULT']['DBTeleInfoName'], self.nbTeleInfoSensor, self.indexHP, self.indexHC, self.periode, self.iInst, time.time())
+        print("save2DB teleingo = {}".format(sql))
         gu.logger.debug("[save2DB][{}]".format(sql))
         super().save2DB(sql)
 

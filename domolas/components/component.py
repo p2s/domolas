@@ -22,6 +22,7 @@ class Component:
         """
 
         gu.c.execute(gu.cfg['DEFAULT']['DBTempHumiSchema'])
+        gu.c.execute(gu.cfg['DEFAULT']['DBTeleInfoSchema'])
 
         gu.c.execute(sql)
         gu.conn.commit()

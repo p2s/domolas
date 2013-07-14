@@ -11,6 +11,7 @@ def main():
 
     teleInfo = comp.TeleInfo(15)
     print ("TeleInfo HC = {}, HP = {}".format(teleInfo.indexHC, teleInfo.indexHP))
+    teleInfo.save2DB();
 
     tempSensor = comp.TempHumi(17)
     print ("Temperature = {}, humidity = {}".format(tempSensor.temp, tempSensor.humidity))
