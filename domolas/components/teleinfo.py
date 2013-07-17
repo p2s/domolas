@@ -87,9 +87,9 @@ class TeleInfo(component.Component):
                 if (tiLine[5:8].isdigit() == True):
                     self._iMax = int(tiLine[5:8])
                     valuesRead.add("_iMax")
-            if (tiLine.find('HHPHC ') == 0):
-                self._pTarif = tiLine[6:7]
-                valuesRead.add("_pTarif")
+            #if (tiLine.find('HHPHC ') == 0):
+            #    self._pTarif = tiLine[6:7]
+            #    valuesRead.add("_pTarif")
 
 
         self._eMeasure = time.time()
